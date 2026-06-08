@@ -31,9 +31,12 @@ jobs:
       - name: Build project
         run: npm run build
 
+      - name: Set safe artifact name
+        run: echo "ARTIFACT_NAME=react-build-$(echo '${{ github.ref_name }}' | tr '/' '-')-${{ github.run_number }}" >> $GITHUB_ENV
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: react-build-${{ github.ref_name }}-${{ github.run_number }}
+          name: ${{ env.ARTIFACT_NAME }}
           path: dist/
           retention-days: 30
